@@ -55,14 +55,14 @@ jobs:
           # command: aws s3 sync jekyll/_site/docs s3://circle-production-static-site/docs/ --delete
           command: ls ~/repo
 
-  workflows:
-    version: 2
-    build-deploy:
-      jobs:
-        - build
-        - deploy:
-            requires:
-              - build
-            filters:
-              branches:
-                only: master
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
