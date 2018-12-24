@@ -53,7 +53,7 @@ jobs:
       - run:
           name: Deploy to S3
           # command: aws s3 sync jekyll/_site/docs s3://circle-production-static-site/docs/ --delete
-          command: ls ~/repo
+          command: ls -ltr /home/circleci/repo/target/personal-website-1.0-SNAPSHOT-bin.zip
 
 workflows:
   version: 2
