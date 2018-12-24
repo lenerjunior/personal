@@ -54,13 +54,17 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+
+      - run: unzip target/personal-website-*-bin.zip
+
       - run:
           name: Install awscli
           command: sudo pip install awscli
+
       - run:
           name: Deploy to S3
           # command: aws s3 sync jekyll/_site/docs s3://circle-production-static-site/docs/ --delete
-          command: ls -ltr /home/circleci/repo/target/personal-website-1.0-SNAPSHOT-bin.zip
+          command: ls -ltr ~/repo
 
 workflows:
   version: 2
