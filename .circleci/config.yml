@@ -63,8 +63,7 @@ jobs:
 
       - run:
           name: Deploy to S3
-          # command: aws s3 sync jekyll/_site/docs s3://circle-production-static-site/docs/ --delete
-          command: ls -ltr ~/repo
+          command: aws s3 sync personal-website-*/ s3://www.lener.com.br/ --delete
 
 workflows:
   version: 2
