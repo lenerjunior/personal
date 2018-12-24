@@ -8,7 +8,8 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/openjdk:8-jdk
-      
+      - image: circleci/python:2.7-jessie
+
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -19,16 +20,16 @@ jobs:
     environment:
       # Customize the JVM maximum heap limit
       MAVEN_OPTS: -Xmx3200m
-    
+
     steps:
       - checkout
 
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "pom.xml" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
       - run: mvn dependency:go-offline
 
@@ -36,17 +37,10 @@ jobs:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
-        
+
       # run tests!
       - run: mvn integration-test
 
-  deploy:
-    docker:
-      - image: circleci/python:2.7-jessie
-
-    working_directory: ~/repo
-
-    steps:
       - run:
           name: Install awscli
           command: sudo pip install awscli
@@ -54,6 +48,57 @@ jobs:
           name: Deploy to S3
           # command: aws s3 sync jekyll/_site/docs s3://circle-production-static-site/docs/ --delete
           command: ls -ltr /home/circleci/repo/target/personal-website-1.0-SNAPSHOT-bin.zip
+#jobs:
+#  build:
+#    docker:
+#      # specify the version you desire here
+#      - image: circleci/openjdk:8-jdk
+#
+#      # Specify service dependencies here if necessary
+#      # CircleCI maintains a library of pre-built images
+#      # documented at https://circleci.com/docs/2.0/circleci-images/
+#      # - image: circleci/postgres:9.4
+#
+#    working_directory: ~/repo
+#
+#    environment:
+#      # Customize the JVM maximum heap limit
+#      MAVEN_OPTS: -Xmx3200m
+#
+#    steps:
+#      - checkout
+#
+#      # Download and cache dependencies
+#      - restore_cache:
+#          keys:
+#          - v1-dependencies-{{ checksum "pom.xml" }}
+#          # fallback to using the latest cache if no exact match is found
+#          - v1-dependencies-
+#
+#      - run: mvn dependency:go-offline
+#
+#      - save_cache:
+#          paths:
+#            - ~/.m2
+#          key: v1-dependencies-{{ checksum "pom.xml" }}
+#
+#      # run tests!
+#      - run: mvn integration-test
+#
+#  deploy:
+#    docker:
+#      - image: circleci/python:2.7-jessie
+#
+#    working_directory: ~/repo
+#
+#    steps:
+#      - run:
+#          name: Install awscli
+#          command: sudo pip install awscli
+#      - run:
+#          name: Deploy to S3
+#          # command: aws s3 sync jekyll/_site/docs s3://circle-production-static-site/docs/ --delete
+#          command: ls -ltr /home/circleci/repo/target/personal-website-1.0-SNAPSHOT-bin.zip
 
 workflows:
   version: 2
