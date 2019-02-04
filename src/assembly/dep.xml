@@ -17,7 +17,7 @@
             <!--</includes>-->
         <!--</fileSet>-->
         <fileSet>
-            <directory>${project.basedir}${file.separator}src${file.separator}main${file.separator}webapp${file.separator}</directory>
+            <directory>${project.build.directory}${file.separator}webapp${file.separator}</directory>
             <outputDirectory>${file.separator}</outputDirectory>
             <includes>
                 <include>**${file.separator}*</include>
